@@ -1,0 +1,45 @@
+{
+  "name": "test-vscode-wasm-wasi-ext-webshell",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.79.0"
+  },
+  "browser": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "webShellMountPoints": [
+      {
+        "mountPoint": "/usr/bin/hello",
+        "command": "wasm-wasi-hello.webshell"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "npm run compile",
+    "build:rust": "cargo build --target wasm32-wasi --release && cp target/wasm32-wasi/release/rust-hello.wasm wasm/bin/hello.wasm",
+    "compile": "node esbuild.config.mjs",
+    "clean": "rimraf out/",
+    "serve": "serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem -c ./configs/serve.json .",
+    "serve:http": "serve --cors -l 5000"
+  },
+  "extensionDependencies": [
+    "ms-vscode.wasm-wasi-core",
+    "ms-vscode.webshell"
+  ],
+  "dependencies": {
+    "@vscode/wasm-wasi": "^0.13.0-pre.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.0",
+    "@types/vscode": "^1.79.0",
+    "@vscode/test-web": "^0.0.44",
+    "esbuild": "^0.18.2",
+    "rimraf": "^5.0.1",
+    "serve": "^14.2.0",
+    "typescript": "^5.1.3"
+  }
+}

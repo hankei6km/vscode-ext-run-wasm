@@ -1,0 +1,1 @@
+# test-vscode-wasm-ext-hello
