@@ -3,7 +3,7 @@
     "rootDir": "./src",
     "skipLibCheck": true,
     "lib": ["es2020", "webworker"],
-    "types": ["node", "vscode"],
+    "types": ["node", "vscode", "@types/mocha"],
     "module": "Node16",
     "moduleResolution": "Node16",
     "outDir": "./out",
@@ -16,5 +16,6 @@
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
-  }
+  },
+  "exclude": ["node_modules", ".vscode-test-web", "out"]
 }
