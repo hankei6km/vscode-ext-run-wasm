@@ -1,36 +1,46 @@
-import { commands, ExtensionContext, Uri, workspace } from 'vscode'
+import { commands, ExtensionContext, workspace } from 'vscode'
 import { Wasm, ProcessOptions, RootFileSystem, Stdio } from '@vscode/wasm-wasi'
+//import minimist from 'minimist'
+import { argsForRun } from './lib/args'
 
-export async function activate(context: ExtensionContext) {
+export async function activate(_context: ExtensionContext) {
   const wasm: Wasm = await Wasm.load()
 
   // https://github.com/microsoft/vscode-wasm/blob/main/testbeds/python/extension.ts
   commands.registerCommand(
-    'wasm-wasi-hello.webshell',
+    'run-wasm.webshell-rw',
     async (
       _command: string,
       args: string[],
-      _cwd: string,
+      cwd: string,
       stdio: Stdio,
       rootFileSystem: RootFileSystem
     ): Promise<number> => {
+      const runArgs = argsForRun(args)
       const options: ProcessOptions = {
         stdio,
         rootFileSystem,
-        args: [...args],
+        args: [...runArgs.cmdArgs],
         trace: true
       }
-      const filename = Uri.joinPath(
-        context.extensionUri,
-        'wasm',
-        'bin',
-        'hello.wasm'
+      const filename = await rootFileSystem.toVSCode(
+        runArgs.cmdPath.startsWith('/')
+          ? runArgs.cmdPath
+          : `${cwd}/${runArgs.cmdPath}`
       )
-      const bits = await workspace.fs.readFile(filename)
-      const module = await WebAssembly.compile(bits)
-      const process = await wasm.createProcess('hello', module, options)
-      const result = await process.run()
-      return result
+      if (filename !== undefined) {
+        const bits = await workspace.fs.readFile(filename)
+        const module = await WebAssembly.compile(bits)
+
+        const process = await wasm.createProcess(
+          runArgs.cmdName,
+          module,
+          options
+        )
+        const result = await process.run()
+        return result
+      }
+      return 1
     }
   )
 }

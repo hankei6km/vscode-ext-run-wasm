@@ -1,20 +1,37 @@
 {
-  "name": "test-vscode-wasm-wasi-ext-webshell",
+  "name": "vscode-ext-run-wasm",
   "version": "0.0.1",
-  "description": "",
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "displayName": "Experimental - Run wasm",
+  "description": "Run wasm on VS Code Web Shell",
+  "keywords": [
+    "wasm",
+    "wasi",
+    "webshell"
+  ],
+  "author": "hankei6km <hankei6km@gmail.com> (https://github.com/hankei6km)",
+  "publisher": "hankei6km",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hankei6km/vscode-ext-start-webcontainer"
+  },
+  "bugs": {
+    "url": "https://github.com/hankei6km/vscode-ext-start-webcontainer/issues"
+  },
   "engines": {
     "vscode": "^1.79.0"
   },
+  "categories": [
+    "Other"
+  ],
+  "license": "MIT",
+  "main": "./out/extension.js",
   "browser": "./out/extension.js",
   "activationEvents": [],
   "contributes": {
     "webShellMountPoints": [
       {
-        "mountPoint": "/usr/bin/hello",
-        "command": "wasm-wasi-hello.webshell"
+        "mountPoint": "/usr/bin/rw",
+        "command": "run-wasm.webshell-rw"
       }
     ]
   },
@@ -22,6 +39,13 @@
     "build": "npm run compile",
     "build:rust": "cargo build --target wasm32-wasi --release && cp target/wasm32-wasi/release/rust-hello.wasm wasm/bin/hello.wasm",
     "compile": "node esbuild.config.mjs",
+    "test": "npm run test:unit && npm run test:electron && npm run test:web",
+    "pretest": "rimraf tmp && mkdir tmp && cp wasm/bin/hello.wasm tmp/hello.wasm",
+    "test:unit": "mocha --require ts-node/register --require source-map-support/register --watch-extensions ts --ui tdd src/test/unit/**/*.test.ts",
+    "test:electron": "xvfb-run node ./out/test/runTest.js",
+    "pretest:electron": "node esbuild.test-electron.config.mjs",
+    "test:web": "vscode-test-web --headless=true --coi true --browserType=chromium --extensionId ms-vscode.wasm-wasi-core@prerelease --extensionId ms-vscode.webshell@prerelease --extensionDevelopmentPath=. --extensionTestsPath=out/test/web/index.js ./tmp",
+    "pretest:web": "node esbuild.test-web.config.mjs",
     "clean": "rimraf out/",
     "serve": "serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem -c ./configs/serve.json .",
     "serve:http": "serve --cors -l 5000"
@@ -31,15 +55,28 @@
     "ms-vscode.webshell"
   ],
   "dependencies": {
-    "@vscode/wasm-wasi": "^0.13.0-pre.1"
+    "@vscode/wasm-wasi": "^0.13.0-pre.1",
+    "minimist": "^1.2.8"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@playwright/test": "^1.36.0",
+    "@types/minimist": "^1.2.2",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^20.3.0",
-    "@types/vscode": "^1.79.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/test-electron": "^2.3.3",
     "@vscode/test-web": "^0.0.44",
+    "assert": "^2.0.0",
+    "esast-util-from-js": "^1.2.0",
     "esbuild": "^0.18.2",
+    "estree-util-to-js": "^1.2.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
     "rimraf": "^5.0.1",
     "serve": "^14.2.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.1.3"
   }
 }

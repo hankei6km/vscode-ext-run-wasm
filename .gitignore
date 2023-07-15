@@ -134,3 +134,4 @@ out/
 CHANGELOG.md
 *.vsix
 target/
+tmp/
