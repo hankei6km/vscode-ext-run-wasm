@@ -46,6 +46,7 @@
     "pretest:electron": "node esbuild.test-electron.config.mjs",
     "test:web": "vscode-test-web --headless=true --coi true --browserType=chromium --extensionId ms-vscode.wasm-wasi-core@prerelease --extensionId ms-vscode.webshell@prerelease --extensionDevelopmentPath=. --extensionTestsPath=out/test/web/index.js ./tmp",
     "pretest:web": "node esbuild.test-web.config.mjs",
+    "lint:type-check": "tsc --noEmit",
     "clean": "rimraf out/",
     "serve": "serve --cors -l 5000 --ssl-cert $HOME/certs/localhost.pem --ssl-key $HOME/certs/localhost-key.pem -c ./configs/serve.json .",
     "serve:http": "serve --cors -l 5000"
