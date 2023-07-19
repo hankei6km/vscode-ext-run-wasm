@@ -1,6 +1,8 @@
 # vscode-ext-run-wasm
 
-Experimental - Web Shell 環境で `.wasm` を開始する VSCode 拡張機能
+Experimental - VSCode extension to run `.wasm` on Web Shell
 
-- `Terminal: Create New Web Shell`
+- Open the termin with Web Shell(Execute the `Terminal: Create New Web Shell` command from the command palette)
 - `$ rw /path/to/file.wasm`
+
+![A screenshot of running a .wasm file using the `rw` command](images/screenshot.png)
