@@ -1,0 +1,67 @@
+name: publish
+on:
+  release:
+    types:
+      - published
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: vscode_marketplace
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      # https://docs.github.com/ja/free-pro-team@latest/actions/guides/caching-dependencies-to-speed-up-workflows
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm キャッシュファイルは Linux/macOS の「~/.npm」に保存される
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+
+      # 今回は devcontainer-ci は使わない予定。
+      - name: Install packages(to run xvfb)
+        run: |
+          sudo apt update -y
+          sudo apt install -y --no-install-recommends xauth libgtk-3-0 xvfb
+
+      - name: Install modules
+        run: npm ci
+
+      - name: Run tests
+        run: |
+          npm run lint:type-check-all
+          npm run test
+
+      # 今回の target は desktop 全般と web に固定。
+      - name: Publish pre-release
+        if: github.event.release.prerelease == true
+        run: |
+          npx vsce package --pre-release
+          npx vsce package --target web --pre-release
+          npx vsce publish --pre-release
+          npx vsce publish --target web --pre-release
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Publish
+        if: github.event.release.prerelease != true
+        run: |
+          npx vsce package
+          npx vsce package --target web
+          npx vsce publish
+          npx vsce publish --target web
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          GH_TOKEN: ${{ github.token }}

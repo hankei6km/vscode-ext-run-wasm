@@ -18,7 +18,7 @@
     "url": "https://github.com/hankei6km/vscode-ext-start-webcontainer/issues"
   },
   "engines": {
-    "vscode": "^1.79.0"
+    "vscode": "^1.80.0"
   },
   "categories": [
     "Other"
@@ -37,6 +37,7 @@
   },
   "scripts": {
     "build": "npm run compile",
+    "vscode:prepublish": "npm run clean && npm run build && bash scripts/gen-changelog.sh",
     "build:rust": "cargo build --target wasm32-wasi --release && cp target/wasm32-wasi/release/rust-hello.wasm wasm/bin/hello.wasm",
     "compile": "node esbuild.config.mjs",
     "test": "npm run test:unit && npm run test:electron && npm run test:web",
@@ -68,6 +69,7 @@
     "@types/vscode": "^1.80.0",
     "@vscode/test-electron": "^2.3.3",
     "@vscode/test-web": "^0.0.44",
+    "@vscode/vsce": "^2.19.0",
     "assert": "^2.0.0",
     "esast-util-from-js": "^1.2.0",
     "esbuild": "^0.18.13",
