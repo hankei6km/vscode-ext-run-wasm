@@ -40,7 +40,7 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run lint:type-check-all
+          npm run lint:type-check
           npm run test
 
       # 今回の target は desktop 全般と web に固定。
