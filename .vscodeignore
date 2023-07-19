@@ -1,4 +1,4 @@
-# This file contains all the files/directories that should
+ This file contains all the files/directories that should
 # be ignored (i.e. not included) in the final packaged extension.
 
 # Ignore extension configs
@@ -11,20 +11,6 @@ out/test/**
 
 # Ignore source code
 src/**
-
-# Ignore all webview-ui files except the build directory
-webview-ui/src/**
-webview-ui/public/**
-webview-ui/scripts/**
-webview-ui/index.html
-webview-ui/README.md
-webview-ui/package.json
-webview-ui/package-lock.json
-webview-ui/node_modules/**
-
-# Ignore all server files
-# server is included in webview-ui at build time
-server/**
 
 # Ignore Misc
 .yarnrc
@@ -41,11 +27,19 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 .codesandbox/**
+.devcontainer/**
+.github/**
 .prettierrc
 .prettierignore
+esbuild.*
+Cargo.*
 images/**
 !images/icon.png
 scripts/**
+target/**
 tmp/**
 # Wasm files is not using in production
 wasm/**
+
+# node_modules is ignored. bundled by esbuild.
+node_modules/**
