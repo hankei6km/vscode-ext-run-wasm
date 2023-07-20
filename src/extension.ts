@@ -1,7 +1,7 @@
 import { commands, ExtensionContext, workspace } from 'vscode'
 import { Wasm, ProcessOptions, RootFileSystem, Stdio } from '@vscode/wasm-wasi'
 //import minimist from 'minimist'
-import { argsForRun } from './lib/args'
+import { argsForRun, normalizeFullPath } from './lib/args'
 
 export async function activate(_context: ExtensionContext) {
   const wasm: Wasm = await Wasm.load()
@@ -24,9 +24,7 @@ export async function activate(_context: ExtensionContext) {
         trace: true
       }
       const filename = await rootFileSystem.toVSCode(
-        runArgs.cmdPath.startsWith('/')
-          ? runArgs.cmdPath
-          : `${cwd}/${runArgs.cmdPath}`
+        normalizeFullPath(cwd, runArgs.cmdPath)
       )
       if (filename !== undefined) {
         const bits = await workspace.fs.readFile(filename)

@@ -1,8 +1,14 @@
 import * as assert from 'assert'
 
-import { argsForRun } from '../../../lib/args'
+import { argsForRun, normalizeFullPath } from '../../../lib/args'
 
 suite('Args Test Suite', () => {
+  test('normalizeFullPath', () => {
+    assert.equal(normalizeFullPath('/workspace', 'foo'), '/workspace/foo')
+    assert.equal(normalizeFullPath('/workspace', './foo'), '/workspace/./foo')
+    assert.equal(normalizeFullPath('/workspace', '/path/tofoo'), '/path/tofoo')
+  })
+
   test('argsForRun', () => {
     assert.deepEqual(argsForRun(['foo', 'bar', '--baz', '1']), {
       runArgs: { _: [] },
