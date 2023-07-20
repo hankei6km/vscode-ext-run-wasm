@@ -7,6 +7,10 @@ export type ArgsForRun = {
   cmdArgs: string[]
 }
 
+export function normalizeFullPath(cwd: string, path: string): string {
+  return path.startsWith('/') ? path : `${cwd}/${path}`
+}
+
 export function argsForRun(args: string[]): ArgsForRun {
   const splitIdx = args.findIndex((arg) => arg === '--')
   const runArgs = args.slice(0, splitIdx + 1)
