@@ -71,7 +71,7 @@
     "@vscode/test-web": "^0.0.44",
     "@vscode/vsce": "^2.20.0",
     "assert": "^2.0.0",
-    "esast-util-from-js": "^2.0.0",
+    "esast-util-from-js": "^2.0.1",
     "esbuild": "^0.18.17",
     "estree-util-to-js": "^1.2.0",
     "glob": "^10.3.3",
