@@ -9,6 +9,10 @@ import {
 //import minimist from 'minimist'
 import { argsForRun, memoryDescriptor, normalizeFullPath } from './lib/args'
 
+function stdoutWrite(stdout: Stdio['out'], data: string) {
+  stdout?.kind === 'terminal' && stdout.terminal.write(data)
+}
+
 export async function activate(_context: ExtensionContext) {
   const wasm: Wasm = await Wasm.load()
 
@@ -36,6 +40,20 @@ export async function activate(_context: ExtensionContext) {
         const bits = await workspace.fs.readFile(filename)
         const module = await WebAssembly.compile(bits)
 
+        if (runArgs.runArgs['print-imports-exports']) {
+          if (stdio.out !== undefined) {
+            for (const imp of WebAssembly.Module.imports(module)) {
+              stdoutWrite(
+                stdio.out,
+                `import: ${imp.module} ${imp.name} ${imp.kind}\n`
+              )
+            }
+            for (const exp of WebAssembly.Module.exports(module)) {
+              stdoutWrite(stdio.out, `export: ${exp.name} ${exp.kind}\n`)
+            }
+          }
+          return 0
+        }
         const memory = memoryDescriptor(runArgs.runArgs)
         let process: WasmProcess | undefined
 
