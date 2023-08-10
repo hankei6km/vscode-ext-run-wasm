@@ -25,3 +25,22 @@ export function argsForRun(args: string[]): ArgsForRun {
     cmdArgs: cmdArgs
   }
 }
+
+export function memoryDescriptor(
+  runArgs: minimist.ParsedArgs
+): WebAssembly.MemoryDescriptor | undefined {
+  if (typeof runArgs['memory-initial'] === 'number') {
+    const ret: WebAssembly.MemoryDescriptor = {
+      initial: runArgs['memory-initial'],
+      shared: true
+    }
+    if (typeof runArgs['memory-maximum'] === 'number') {
+      ret.maximum = runArgs['memory-maximum']
+    }
+    if (runArgs['memory-shared'] === 'false') {
+      ret.shared = false
+    }
+    return ret
+  }
+  return undefined
+}

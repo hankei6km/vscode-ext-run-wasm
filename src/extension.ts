@@ -1,7 +1,13 @@
 import { commands, ExtensionContext, workspace } from 'vscode'
-import { Wasm, ProcessOptions, RootFileSystem, Stdio } from '@vscode/wasm-wasi'
+import {
+  Wasm,
+  ProcessOptions,
+  RootFileSystem,
+  Stdio,
+  WasmProcess
+} from '@vscode/wasm-wasi'
 //import minimist from 'minimist'
-import { argsForRun, normalizeFullPath } from './lib/args'
+import { argsForRun, memoryDescriptor, normalizeFullPath } from './lib/args'
 
 export async function activate(_context: ExtensionContext) {
   const wasm: Wasm = await Wasm.load()
@@ -30,11 +36,19 @@ export async function activate(_context: ExtensionContext) {
         const bits = await workspace.fs.readFile(filename)
         const module = await WebAssembly.compile(bits)
 
-        const process = await wasm.createProcess(
-          runArgs.cmdName,
-          module,
-          options
-        )
+        const memory = memoryDescriptor(runArgs.runArgs)
+        let process: WasmProcess | undefined
+
+        if (memory !== undefined) {
+          process = await wasm.createProcess(
+            runArgs.cmdName,
+            module,
+            memory,
+            options
+          )
+        } else {
+          process = await wasm.createProcess(runArgs.cmdName, module, options)
+        }
         const result = await process.run()
         return result
       }

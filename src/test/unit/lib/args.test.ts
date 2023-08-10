@@ -1,6 +1,10 @@
 import * as assert from 'assert'
 
-import { argsForRun, normalizeFullPath } from '../../../lib/args'
+import {
+  argsForRun,
+  memoryDescriptor,
+  normalizeFullPath
+} from '../../../lib/args'
 
 suite('Args Test Suite', () => {
   test('normalizeFullPath', () => {
@@ -51,6 +55,37 @@ suite('Args Test Suite', () => {
         cmdName: 'foo',
         cmdPath: '/workspace/foo',
         cmdArgs: ['--qux', '2', '--', 'bar', '--quux']
+      }
+    )
+  })
+
+  test('memoryDescriptor', () => {
+    assert.deepEqual(memoryDescriptor({ _: [] }), undefined)
+    assert.deepEqual(
+      memoryDescriptor({ _: [], 'memory-initial': 10, 'memory-maximum': 160 }),
+      {
+        initial: 10,
+        maximum: 160,
+        shared: true
+      }
+    )
+    assert.deepEqual(
+      memoryDescriptor({
+        _: [],
+        'memory-initial': '10',
+        'memory-maximum': 160
+      }),
+      undefined
+    )
+    assert.deepEqual(
+      memoryDescriptor({
+        _: [],
+        'memory-initial': 10,
+        'memory-shared': 'false'
+      }),
+      {
+        initial: 10,
+        shared: false
       }
     )
   })
