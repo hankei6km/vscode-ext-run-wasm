@@ -34,7 +34,7 @@ You can measure the elapsed time of the running `.wasm` file with the `--print-e
 rw --print-elapsed-time -- /path/to/file.wasm
 ```
 
-## Print Imports and Exports
+### Print Imports and Exports
 
 You can print the imports and exports of the `.wasm` file with the `--print-imports-exports` flags.
 
