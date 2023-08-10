@@ -67,7 +67,11 @@ export async function activate(_context: ExtensionContext) {
         } else {
           process = await wasm.createProcess(runArgs.cmdName, module, options)
         }
+        const started = Date.now()
         const result = await process.run()
+        if (runArgs.runArgs['print-elapsed-time']) {
+          stdoutWrite(stdio.out, `${Date.now() - started}\n`)
+        }
         return result
       }
       return 1
