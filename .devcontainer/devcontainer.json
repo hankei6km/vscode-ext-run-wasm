@@ -17,7 +17,7 @@
   "postStartCommand": [],
   // rust は hello.wasm をビルドするときだ必要。
   // "postCreateCommand": "rustup target add wasm32-wasi && npm ci && npx playwright install-deps",
-  "postCreateCommand": "npm ci && npx playwright install-deps",
+  "postCreateCommand": "npm ci && npx playwright install --with-deps",
   "customizations": {
     "vscode": {
       "extensions": [
