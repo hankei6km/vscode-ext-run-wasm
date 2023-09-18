@@ -43,7 +43,9 @@ jobs:
           sudo apt install -y --no-install-recommends xauth libgtk-3-0 xvfb
 
       - name: Install modules
-        run: npm ci
+        run: |
+          npm ci
+          npx playwright install --with-deps
 
       - name: Run tests
         run: |
