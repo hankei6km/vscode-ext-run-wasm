@@ -39,5 +39,5 @@ rw --print-elapsed-time -- /path/to/file.wasm
 You can print the imports and exports of the `.wasm` file with the `--print-imports-exports` flags.
 
 ```sh
-rw --print-imports--exports -- /path/to/file.wasm
+rw --print-imports-exports -- /path/to/file.wasm
 ```
