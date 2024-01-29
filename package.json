@@ -67,7 +67,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.5",
     "@types/vscode": "^1.81.0",
-    "@vscode/test-electron": "^2.3.8",
+    "@vscode/test-electron": "^2.3.9",
     "@vscode/test-web": "^0.0.50",
     "@vscode/vsce": "^2.22.0",
     "assert": "^2.1.0",
