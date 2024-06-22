@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:22-bookworm
 
 RUN apt update -y \
     && apt install -y --no-install-recommends xauth libgtk-3-0 xvfb \
