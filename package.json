@@ -1,6 +1,6 @@
 {
   "name": "vscode-ext-run-wasm",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "displayName": "Experimental - Run wasm",
   "description": "Run wasm on VS Code Web Shell",
   "keywords": [
