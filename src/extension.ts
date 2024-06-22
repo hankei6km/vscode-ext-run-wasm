@@ -5,7 +5,7 @@ import {
   RootFileSystem,
   Stdio,
   WasmProcess
-} from '@vscode/wasm-wasi'
+} from '@vscode/wasm-wasi/v1'
 //import minimist from 'minimist'
 import { argsForRun, memoryDescriptor, normalizeFullPath } from './lib/args'
 
