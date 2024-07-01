@@ -65,7 +65,7 @@
     "@playwright/test": "^1.44.1",
     "@types/minimist": "^1.2.5",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "@types/vscode": "^1.90.0",
     "@vscode/test-electron": "^2.4.0",
     "@vscode/test-web": "^0.0.54",
