@@ -57,7 +57,7 @@
     "ms-vscode.webshell"
   ],
   "dependencies": {
-    "@vscode/wasm-wasi": "^1.0.0",
+    "@vscode/wasm-wasi": "^1.0.1",
     "minimist": "^1.2.8"
   },
   "devDependencies": {
